@@ -12,7 +12,7 @@
 
 import firedrake
 
-def newton_search(E, u, bc, tolerance, scale,
+def newton_search(E, u, bcs, tolerance, scale,
                   max_iterations=50, armijo=1e-4, contraction_factor=0.5,
                   form_compiler_parameters={},
                   solver_parameters={'ksp_type': 'preonly', 'pc_type': 'lu'}):
@@ -22,8 +22,11 @@ def newton_search(E, u, bc, tolerance, scale,
     ----------
     E : firedrake.Form
         The functional to be minimized
-    u0 : firedrake.Function
+    u : firedrake.Function
         Initial guess for the minimizer
+    bcs : firedrake.DirichletBC or None
+        Boundary conditions for any part of the domian where the solution
+        is fixed
     tolerance : float
         Stopping criterion for the optimization procedure
     scale : firedrake.Form
@@ -55,7 +58,7 @@ def newton_search(E, u, bc, tolerance, scale,
         return firedrake.assemble(
             *args, **kwargs, form_compiler_parameters=form_compiler_parameters)
 
-    problem = firedrake.LinearVariationalProblem(H, -F, v, bc,
+    problem = firedrake.LinearVariationalProblem(H, -F, v, bcs=bcs,
                   form_compiler_parameters=form_compiler_parameters,
                   constant_jacobian=False)
     solver = firedrake.LinearVariationalSolver(problem,

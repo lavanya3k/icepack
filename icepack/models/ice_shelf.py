@@ -179,13 +179,16 @@ class IceShelf(object):
         kwargs['side_wall_ids'] = side_wall_ids
         kwargs['ice_front_ids'] = list(
             set(boundary_ids) - set(dirichlet_ids) - set(side_wall_ids))
-        bcs = firedrake.DirichletBC(
-            u.function_space(), firedrake.as_vector((0, 0)), dirichlet_ids)
-        params = {'quadrature_degree': self.quadrature_degree(u, h, **kwargs)}
+        bcs = None
+        if dirichlet_ids:
+            bcs = firedrake.DirichletBC(u.function_space(),
+                                        firedrake.as_vector((0, 0)),
+                                        dirichlet_ids)
 
         # Solve the nonlinear optimization problem
         action = self.action(u=u, h=h, **kwargs)
         scale = self.scale(u=u, h=h, **kwargs)
+        params = {'quadrature_degree': self.quadrature_degree(u, h, **kwargs)}
         return newton_search(action, u, bcs, tol, scale,
                              form_compiler_parameters=params)
 
