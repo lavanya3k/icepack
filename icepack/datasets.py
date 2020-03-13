@@ -130,7 +130,8 @@ def fetch_bedmachine_greenland():
 
 
 outlines_url = 'https://raw.githubusercontent.com/icepack/glacier-meshes/'
-outlines_commit = 'a522188dadb9ba49d4848ba66cab8c90f9fda5d9'
+outlines_commit = '6dfd07af371dce7f76927711b2e3bc6a52b4079e'
+
 larsen_outline = pooch.create(
     path=pooch.os_cache('icepack'),
     base_url=outlines_url + outlines_commit + '/glaciers/',
@@ -143,6 +144,21 @@ larsen_outline = pooch.create(
 def fetch_larsen_outline():
     return larsen_outline.fetch(
         'larsen.geojson', downloader=pooch.HTTPDownloader(progressbar=True)
+    )
+
+
+helheim_outline = pooch.create(
+    path=pooch.os_cache('icepack'),
+    base_url=outlines_url + outlines_commit + '/glaciers/',
+    registry={
+        'helheim.geojson':
+        '6de3a00f756aef68fefa40e7837ada484b412c5441410ff59caff7b2ed1bb75a'
+    }
+)
+
+def fetch_helheim_outline():
+    return helheim_outline.fetch(
+        'helheim.geojson', downloader=pooch.HTTPDownloader(progressbar=True)
     )
 
 
