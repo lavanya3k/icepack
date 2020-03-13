@@ -107,8 +107,26 @@ bedmachine_antarctica = pooch.create(
 )
 
 def fetch_bedmachine_antarctica():
-    return bedmachine_antarctica.fetch('BedMachineAntarctica_2019-11-05_v01.nc',
-                                       downloader=_earthdata_downloader)
+    return bedmachine_antarctica.fetch(
+        'BedMachineAntarctica_2019-11-05_v01.nc',
+        downloader=_earthdata_downloader
+    )
+
+
+bedmachine_greenland = pooch.create(
+    path=pooch.os_cache('icepack'),
+    base_url='https://n5eil01u.ecs.nsidc.org/ICEBRIDGE/IDBMG4.003/1993.01.01/',
+    registry={
+        'BedMachineGreenland-2017-09-20.nc':
+        '075cbf643ed409b0d185e482d1143e6744db4b3813595fb9b3779036361efa3f'
+    }
+)
+
+def fetch_bedmachine_greenland():
+    return bedmachine_greenland.fetch(
+        'BedMachineGreenland-2017-09-20.nc',
+        downloader=_earthdata_downloader
+    )
 
 
 outlines_url = 'https://raw.githubusercontent.com/icepack/glacier-meshes/'
